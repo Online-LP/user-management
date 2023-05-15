@@ -250,7 +250,9 @@ public class AppUserServiceImpl {
 			appUserTo.setMobileNo(appUser.getMobileNo());
 			appUserTo.setUserName(appUser.getUserName());
 			appUserTo.setUserId(appUser.getUserId());
+			notificationRequest.setAppuser(appUserTo);
 			notificationRequest.setContextPath(path);
+			notificationRequest.setResetToken(appUser.getResetToken());
 			
 			notificationServiceImpl.sendSignUpSuccsessNotification(notificationRequest);
 			

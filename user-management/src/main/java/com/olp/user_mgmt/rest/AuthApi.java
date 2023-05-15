@@ -113,6 +113,7 @@ public class AuthApi {
 			appUserTo.setUserName(temPAppUser.getUserName());
 			appUserTo.setUserId(temPAppUser.getUserId());
 			notificationRequest.setAppuser(appUserTo);
+			notificationRequest.setResetToken(temPAppUser.getResetToken());
 
 			notificationServiceImpl.sendLoginSuccessNotification(notificationRequest);
 
@@ -178,7 +179,9 @@ public class AuthApi {
 				appUserTo.setMobileNo(temPAppUser.getMobileNo());
 				appUserTo.setUserName(temPAppUser.getUserName());
 				appUserTo.setUserId(temPAppUser.getUserId());
+				notificationRequest.setAppuser(appUserTo);
 				notificationRequest.setContextPath(path);
+				notificationRequest.setResetToken(temPAppUser.getResetToken());
 
 				notificationServiceImpl.sendForgotPasswordLink(notificationRequest);
 
@@ -243,6 +246,8 @@ public class AuthApi {
 					appUserTo.setMobileNo(editUser.getMobileNo());
 					appUserTo.setUserName(editUser.getUserName());
 					appUserTo.setUserId(editUser.getUserId());
+					notificationRequest.setAppuser(appUserTo);
+					notificationRequest.setResetToken(editUser.getResetToken());
 
 					notificationServiceImpl.sendResetPasswordSuccessNotification(notificationRequest);
 				}
