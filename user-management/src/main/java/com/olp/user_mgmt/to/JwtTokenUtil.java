@@ -35,6 +35,11 @@ public class JwtTokenUtil {
 	public boolean validateAccessToken(String token) {
 		try {
 			Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+			
+			if(TokenBlacklist.isTokenRevoked(token)) {
+				return false;
+			}
+			
 			return true;
 		} catch (ExpiredJwtException ex) {
 			LOGGER.error("JWT expired", ex.getMessage());

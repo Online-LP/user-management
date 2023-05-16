@@ -46,8 +46,10 @@ import com.olp.user_mgmt.service.NotificationServiceImpl;
 import com.olp.user_mgmt.to.AppUserTO;
 import com.olp.user_mgmt.to.AuthResponse;
 import com.olp.user_mgmt.to.CaptchaUtil;
+import com.olp.user_mgmt.to.JwtTokenFilter;
 import com.olp.user_mgmt.to.JwtTokenUtil;
 import com.olp.user_mgmt.to.NotificationRequest;
+import com.olp.user_mgmt.to.TokenBlacklist;
 
 @RestController
 public class AuthApi {
@@ -57,6 +59,8 @@ public class AuthApi {
 	AuthenticationManager authManager;
 	@Autowired
 	JwtTokenUtil jwtUtil;
+	@Autowired
+	JwtTokenFilter jwtTokenFilter;
 	@Autowired
 	AppUserServiceImpl appUserServiceImpl;
 	@Autowired
@@ -328,8 +332,11 @@ public class AuthApi {
 		ResponseStatus responseStatus = new ResponseStatus();
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String accessToken = jwtTokenFilter.getAccessToken(request);
+			TokenBlacklist.revokeToken(accessToken);
 			if (auth != null) {
 				new SecurityContextLogoutHandler().logout(request, response, auth);
+				
 				responseStatus.setStatusCode(Integer.parseInt(env.getProperty("AUTH_LOGOUT_SUCCESS_CODE")));
 				responseStatus.setStatusMessage(env.getProperty("AUTH_LOGOUT_SUCCESS_MESSAGE"));
 			} else {
